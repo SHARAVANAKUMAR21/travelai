@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <style>
+        /* Basic styling for body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Centering container */
+        .container {
+            width: 90%;
+            max-width: 600px; /* Limit max width for larger screens */
+            margin: 40px auto; /* Center container */
+            padding: 20px;
+            background-color: #fff; /* White background for the form */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        h2 {
+            text-align: center; /* Center heading */
+            color: #333; /* Dark text for contrast */
+        }
+
+        /* Styling form elements */
+        form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+        }
+
+        /* Styling individual form fields */
+        form input, form select, form textarea {
+            margin-bottom: 15px; /* Space between fields */
+            padding: 10px; /* Padding inside fields */
+            border: 1px solid #ccc; /* Light border */
+            border-radius: 5px; /* Rounded corners for fields */
+            font-size: 16px; /* Slightly larger font */
+        }
+
+        button {
+            padding: 10px;
+            background-color: #3498db; /* Button color */
+            color: white; /* Text color */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Button font size */
+            transition: background-color 0.3s; /* Smooth background color change */
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        /* Styling the cancel link */
+        a {
+            text-align: center; /* Center the link */
+            display: block; /* Make the link a block element */
+            margin-top: 20px; /* Space above link */
+            color: #3498db; /* Link color */
+            text-decoration: none; /* Remove underline */
+            font-size: 16px; /* Link font size */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Product: {{ product.name }}</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save changes</button>
+        </form>
+        <a href="{% url 'product_list' %}">Cancel</a>
+    </div>
+</body>
+</html>

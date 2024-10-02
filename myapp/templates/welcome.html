@@ -1,0 +1,604 @@
+{% comment %} 
+
+ {% load static %}
+
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Welcome to travel.ai & co</title>
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+     <style>
+         body {
+             margin: 0;
+             font-family: 'Poppins', sans-serif;
+             background-color: #212121; /* Dark black background */
+             color: #fff;
+             scroll-behavior: smooth;
+         }
+ 
+         .navbar {
+             position: sticky;
+             top: 0;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 8px;
+             background-color: #c0392b; /* Red */
+             color: #fff;
+             z-index: 1000;
+             transition: background-color 0.3s;
+         }
+ 
+         .navbar:hover {
+             background-color: #e74c3c; /* Lighter red on hover */
+         }
+ 
+         .navbar img {
+             width: 200px;
+             height: auto;
+         }
+ 
+         .navbar ul {
+             list-style-type: none;
+             margin: 0;
+             padding: 0;
+             display: flex;
+         }
+ 
+         .navbar ul li {
+             margin-left: 20px;
+         }
+ 
+         .navbar ul li a {
+             color: #fff;
+             text-decoration: none;
+             font-weight: bold;
+             padding: 8px 15px;
+             border-radius: 4px;
+             transition: background-color 0.3s ease;
+         }
+ 
+         .navbar ul li a:hover {
+             background-color: #fff;
+             color: #c0392b; /* Red text on hover */
+         }
+ 
+         .hero {
+             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{% static 'img/bgimg1.jpg' %}");
+             background-size: cover;
+             background-position: center;
+             height: 600px;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             color: #fff;
+             text-align: center;
+             animation: fadeIn 1.5s ease-in-out;
+         }
+ 
+         @keyframes fadeIn {
+             from { opacity: 0; }
+             to { opacity: 1; }
+         }
+ 
+         .hero h1 {
+             font-size: 58px;
+             font-weight: 700;
+             animation: slideInLeft 1s ease-out;
+         }
+ 
+         @keyframes slideInLeft {
+             from { transform: translateX(-100%); }
+             to { transform: translateX(0); }
+         }
+ 
+         .hero p {
+             font-size: 28px;
+             margin-top: 10px;
+             opacity: 0.9;
+         }
+ 
+         .hero button {
+             margin-top: 20px;
+             padding: 10px 25px;
+             font-size: 18px;
+             font-weight: bold;
+             background-color: #c0392b;
+             border: none;
+             color: #fff;
+             border-radius: 25px;
+             cursor: pointer;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+             transition: all 0.3s ease;
+         }
+ 
+         .hero button:hover {
+             background-color: #e74c3c;
+             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+         }
+ 
+         .about-container {
+            padding: 60px 20px;
+            background-color: #e74c3c;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-in-out;
+        }
+        .about-container.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .about-container h2 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .about-container p {
+            font-size: 18px;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+ 
+         .footer {
+             background-color: #c0392b;
+             color: #fff;
+             text-align: center;
+             padding: 20px 0;
+         }
+ 
+         .footer a:hover {
+             color: #e74c3c;
+         }
+ 
+         .social-icons a {
+             color: #fff;
+             margin: 0 10px;
+             font-size: 20px;
+         }
+ 
+         .social-icons a:hover {
+             color: #e74c3c;
+             transition: color 0.3s ease;
+         }
+ 
+         
+/* Chatbot Button Styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.chatbot-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #c0392b; /* Red color */
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.chatbot-button i {
+    margin-right: 8px; /* Spacing between icon and text */
+}
+
+.chatbot-button:hover {
+    background-color: #a93226; /* Darker red on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .chatbot-button {
+        padding: 10px 12px;
+    }
+}
+
+     </style>
+ </head>
+ 
+ <body>
+     <nav class="navbar">
+         <img src="{% static 'img/logo.png' %}" alt="Travel.ai Logo">
+         <ul>
+             <li><a href="{% url 'product_list' %}">Our Destinations</a></li>
+             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+             <li><a href="#about-container">Streamlit</a></li>
+             <li><a href="#">About</a></li>
+             <li><a href="{% url 'recommendation_form' %}">Travel.ai</a></li>
+             <li><a href="{% url 'user_login' %}">Sign In</a></li>
+             <li><a href="{% url 'user_register' %}">Sign Up</a></li>
+         </ul> 
+     </nav>
+ 
+     <div class="hero">
+         <div>
+             <h1>Welcome to travel.ai & co</h1>
+             <p>Your AI-Powered Travel Partner</p>
+             <a href="{% url 'product_list' %}">
+                 <button>Explore Destinations</button>
+             </a>
+         </div>
+     </div>
+ 
+     <h2>About Us</h2>
+
+     <h3>Our Mission</h3>
+     <p>At travel.ai & co, our mission is to revolutionize the travel experience by harnessing the power of artificial intelligence. We aim to provide personalized travel solutions that cater to your unique preferences, ensuring that every journey you embark on is memorable and hassle-free.</p>
+
+     <h3>What We Offer</h3>
+     <ul>
+         <li><strong>Personalized Recommendations:</strong> Our AI-driven platform analyzes your preferences and interests to suggest destinations, activities, and travel packages tailored just for you.</li>
+         <li><strong>Seamless Booking Process:</strong> We simplify the booking process, allowing you to plan and reserve your dream vacations in just a few clicks.</li>
+         <li><strong>24/7 Customer Support:</strong> Our dedicated support team is available around the clock to assist you with any inquiries, ensuring you have a smooth travel experience.</li>
+     </ul>
+
+     <h3>Why Choose Us?</h3>
+     <ul>
+         <li><strong>Cutting-Edge Technology:</strong> We utilize the latest advancements in AI to provide insights and recommendations based on real-time data, enhancing your travel planning experience.</li>
+         <li><strong>Diverse Destinations:</strong> From exotic beach getaways to thrilling mountain adventures, our platform offers a wide range of destinations to suit every traveler’s taste.</li>
+         <li><strong>Community-Focused:</strong> We believe in creating a community of travelers who share their experiences and tips, fostering a supportive environment for all.</li>
+     </ul>
+
+     <h3>Our Vision</h3>
+     <p>We envision a world where every traveler can easily access the information and resources they need to make informed travel decisions. With travel.ai & co, your next adventure is just a click away!</p>
+ 
+ 
+     <!-- Collapsible Chat Button -->
+     
+
+     <div class="chatbot-container">
+        <a href="{% url 'chat_home' %}" class="chatbot-button">
+            <i class="fa fa-comments"></i>
+            <span>Chat with us!</span>
+        </a>
+    </div>
+
+
+
+     <footer class="footer">
+         <div class="social-icons">
+             <a href="#"><i class="fab fa-facebook"></i></a>
+             <a href="#"><i class="fab fa-instagram"></i></a>
+             <a href="#"><i class="fab fa-twitter"></i></a>
+             <a href="#"><i class="fab fa-youtube"></i></a>
+         </div>
+         <p>© 2024 travel.ai & co | Powered by AI</p>
+     </footer>
+ 
+     <script>
+         function toggleChat() {
+             var chatContainer = document.getElementById('chatContainer');
+             if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+                 chatContainer.style.display = 'flex';
+             } else {
+                 chatContainer.style.display = 'none';
+             }
+         }
+
+
+
+
+         function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Function to add 'in-view' class
+        function checkVisibility() {
+            const aboutContainer = document.getElementById('about');
+            if (isElementInViewport(aboutContainer)) {
+                aboutContainer.classList.add('in-view');
+            }
+        }
+
+        // Check visibility on scroll
+        window.addEventListener('scroll', checkVisibility);
+        // Check visibility on load
+        window.addEventListener('load', checkVisibility);
+     </script>
+ </body>
+  {% endcomment %}
+
+
+
+
+  {% load static %}
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welcome to travel.ai & co</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      <style>
+          body {
+              margin: 0;
+              font-family: 'Poppins', sans-serif;
+              background-color: #212121; /* Dark black background */
+              color: #fff;
+              scroll-behavior: smooth;
+          }
+  
+          .navbar {
+              position: sticky;
+              top: 0;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 8px;
+              background-color: #c0392b; /* Red */
+              color: #fff;
+              z-index: 1000;
+              transition: background-color 0.3s;
+          }
+  
+          .navbar:hover {
+              background-color: #e74c3c; /* Lighter red on hover */
+          }
+  
+          .navbar img {
+              width: 200px;
+              height: auto;
+          }
+  
+          .navbar ul {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+              display: flex;
+          }
+  
+          .navbar ul li {
+              margin-left: 20px;
+          }
+  
+          .navbar ul li a {
+              color: #fff;
+              text-decoration: none;
+              font-weight: bold;
+              padding: 8px 15px;
+              border-radius: 4px;
+              transition: background-color 0.3s ease;
+          }
+  
+          .navbar ul li a:hover {
+              background-color: #fff;
+              color: #c0392b; /* Red text on hover */
+          }
+  
+          .hero {
+              background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{% static 'img/bgimg1.jpg' %}");
+              background-size: cover;
+              background-position: center;
+              height: 600px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #fff;
+              text-align: center;
+              animation: fadeIn 1.5s ease-in-out;
+          }
+  
+          @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+          }
+  
+          .hero h1 {
+              font-size: 58px;
+              font-weight: 700;
+              animation: slideInLeft 1s ease-out;
+          }
+  
+          @keyframes slideInLeft {
+              from { transform: translateX(-100%); }
+              to { transform: translateX(0); }
+          }
+  
+          .hero p {
+              font-size: 28px;
+              margin-top: 10px;
+              opacity: 0.9;
+          }
+  
+          .hero button {
+              margin-top: 20px;
+              padding: 10px 25px;
+              font-size: 18px;
+              font-weight: bold;
+              background-color: #c0392b;
+              border: none;
+              color: #fff;
+              border-radius: 25px;
+              cursor: pointer;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+              transition: all 0.3s ease;
+          }
+  
+          .hero button:hover {
+              background-color: #e74c3c;
+              box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+          }
+  
+          .about-container {
+              padding: 60px 20px;
+              background-color: #e74c3c;
+              text-align: center;
+              opacity: 0;
+              transform: translateY(50px);
+              transition: all 0.8s ease-in-out;
+          }
+          .about-container.in-view {
+              opacity: 1;
+              transform: translateY(0);
+          }
+          .about-container h2 {
+              font-size: 36px;
+              color: #fff;
+              margin-bottom: 20px;
+          }
+          .about-container p {
+              font-size: 18px;
+              color: #fff;
+              max-width: 800px;
+              margin: 0 auto;
+              line-height: 1.8;
+          }
+  
+          .footer {
+              background-color: #c0392b;
+              color: #fff;
+              text-align: center;
+              padding: 20px 0;
+          }
+  
+          .footer a:hover {
+              color: #e74c3c;
+          }
+  
+          .social-icons a {
+              color: #fff;
+              margin: 0 10px;
+              font-size: 20px;
+          }
+  
+          .social-icons a:hover {
+              color: #e74c3c;
+              transition: color 0.3s ease;
+          }
+  
+          /* Chatbot Button Styles */
+          .chatbot-container {
+              position: fixed;
+              bottom: 30px;
+              right: 30px;
+              z-index: 1000;
+          }
+  
+          .chatbot-button {
+              display: flex;
+              align-items: center;
+              padding: 12px 16px;
+              background-color: #c0392b; /* Red color */
+              color: white;
+              border-radius: 50px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+              transition: background-color 0.3s ease, transform 0.2s ease;
+              text-decoration: none;
+          }
+  
+          .chatbot-button i {
+              margin-right: 8px; /* Spacing between icon and text */
+          }
+  
+          .chatbot-button:hover {
+              background-color: #a93226; /* Darker red on hover */
+              transform: translateY(-3px); /* Slight lift effect */
+          }
+  
+          /* Media Queries */
+          @media (max-width: 768px) {
+              .chatbot-button {
+                  padding: 10px 12px;
+              }
+          }
+      </style>
+  </head>
+  
+  <body>
+      <nav class="navbar">
+          <img src="{% static 'img/logo.png' %}" alt="Travel.ai Logo">
+          <ul>
+              <li><a href="{% url 'product_list' %}">Our Destinations</a></li>
+              <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+              <li><a href=" ">Streamlit</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="{% url 'recommendation_form' %}">Travel.ai</a></li>
+              <li><a href="{% url 'user_login' %}">Sign In</a></li>
+              <li><a href="{% url 'user_register' %}">Sign Up</a></li>
+          </ul>
+      </nav>
+  
+      <div class="hero">
+          <div>
+              <h1>Welcome to travel.ai & co</h1>
+              <p>Your AI-Powered Travel Partner</p>
+              <a href="{% url 'product_list' %}">
+                  <button>Explore Destinations</button>
+              </a>
+          </div>
+      </div>
+  
+      <div class="about-container" id="about">
+          <h2>About Us</h2>
+          <h3>Our Mission</h3>
+          <p>At travel.ai & co, our mission is to revolutionize the travel experience by harnessing the power of artificial intelligence. We aim to provide personalized travel solutions that cater to your unique preferences, ensuring that every journey you embark on is memorable and hassle-free.</p>
+  
+          <h3>What We Offer</h3>
+          <ul>
+              <li><strong>Personalized Recommendations:</strong> Our AI-driven platform analyzes your preferences and interests to suggest destinations, activities, and travel packages tailored just for you.</li>
+              <li><strong>Seamless Booking Process:</strong> We simplify the booking process, allowing you to plan and reserve your dream vacations in just a few clicks.</li>
+              <li><strong>24/7 Customer Support:</strong> Our dedicated support team is available around the clock to assist you with any inquiries, ensuring you have a smooth travel experience.</li>
+          </ul>
+  
+          <h3>Why Choose Us?</h3>
+          <ul>
+              <li><strong>Cutting-Edge Technology:</strong> We utilize the latest advancements in AI to provide insights and recommendations based on real-time data, enhancing your travel planning experience.</li>
+              <li><strong>Diverse Destinations:</strong> From exotic beach getaways to thrilling mountain adventures, our platform offers a wide range of destinations to suit every traveler’s taste.</li>
+              <li><strong>Community-Focused:</strong> We believe in creating a community of travelers who share their experiences and tips, fostering a supportive environment for all.</li>
+          </ul>
+  
+          <h3>Our Vision</h3>
+          <p>We envision a world where every traveler can easily access the information and resources they need to make informed travel decisions. With travel.ai & co, we strive to empower you to explore the world confidently.</p>
+      </div>
+
+
+
+      <div class="chatbot-container">
+        <a href="{% url 'chat_home' %}" class="chatbot-button">
+            <i class="fa fa-comments"></i>
+            <span>Chat with us!</span>
+        </a>
+    </div>
+
+
+
+  
+      <footer class="footer">
+          <p>&copy; 2024 travel.ai & co. All rights reserved.</p>
+          <div class="social-icons">
+              <a href="https://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.twitter.com"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+      </footer>
+  
+      <script>
+          // Scroll event to trigger animations
+          window.addEventListener('scroll', function () {
+              const aboutContainer = document.getElementById('about');
+              const aboutContainerPosition = aboutContainer.getBoundingClientRect().top;
+              const screenPosition = window.innerHeight / 1.2;
+  
+              if (aboutContainerPosition < screenPosition) {
+                  aboutContainer.classList.add('in-view');
+              }
+          });
+      </script>
+  </body>
+  

@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Travel.ai</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/nouislider.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/welcome.css' %}">
+
+    <style>
+
+        /* General styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header styles */
+#top-header {
+    background-color: #c0392b; /* Red color */
+    color: white;
+    padding: 10px 0;
+}
+
+/* Welcome section styles */
+.welcome-section {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #000; /* Black background */
+    border-radius: 10px;
+}
+
+.welcome-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #c0392b; /* Red color */
+}
+
+.welcome-description {
+    font-size: 18px;
+    color: #666;
+    margin-top: 15px;
+}
+
+/* Chatbot Button Styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.chatbot-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #c0392b; /* Red color */
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.chatbot-button i {
+    margin-right: 8px; /* Spacing between icon and text */
+}
+
+.chatbot-button:hover {
+    background-color: #a93226; /* Darker red on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .chatbot-button {
+        padding: 10px 12px;
+    }
+}
+
+.travel {
+    color: white; /* Text color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+.travel:hover {
+    color: #c0392b; /* Change color to red on hover */
+}
+
+/* Product styles */
+.product {
+    background-color: white; /* White background for product cards */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Round edges on images */
+    transition: transform 0.3s;
+}
+
+.product:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.product-img img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover; /* Ensures the image covers the area */
+}
+
+.product-body {
+    padding: 15px; /* Padding for product details */
+}
+
+.product-category {
+    font-size: 14px;
+    color: #666; /* Category text color */
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: bold; /* Bold product name */
+}
+
+.product-price {
+    font-size: 16px;
+    color: #c0392b; /* Price color */
+    margin-top: 10px; /* Space above price */
+}
+
+/* Footer styles */
+#footer {
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    padding: 20px 0; /* Padding for footer */
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div id="top-header">
+            <div class="container">
+                <ul class="header-links pull-left">
+                    <li><a href="#"><i class="fa fa-phone"></i> +1234567890</a></li>
+                    <li><a href="#"><i class="fa fa-envelope-o"></i> support@travel.ai </a></li>
+                    <li><a href="#"><i class="fa fa-map-marker"></i> Peerumade, India</a></li>
+                </ul>
+                <ul class="header-links pull-right">
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'order_list_and_detail' %}"><i class="fa-solid fa-box"></i> Orders</a></li>
+                    <li><a href="{% url 'profile_update' %}"><i class="fa fa-user-o"></i> My Account</a></li>
+                    <li><a href="{% url 'user_logout' %}"><i class="fa fa-user-o"></i>Logout</a></li>
+                    {% else %}
+                    {% comment %} <a href="{% url 'user_login' %}" style="color: white; text-decoration: none;">Login</a>
+                    
+                    <a href="{% url 'user_register' %}" style="color: white; text-decoration: none;">Signup</a
+                    
+                    <a href="{% url 'admin_login' %}" style="color: white; text-decoration: none;">Admin Login</a> {% endcomment %}
+
+
+                    <a href="{% url 'user_login' %}" style="color: white; text-decoration: none; margin-right: 15px;">Login</a>
+<a href="{% url 'user_register' %}" style="color: white; text-decoration: none; margin-right: 15px;">Signup</a>
+<a href="{% url 'admin_login' %}" style="color: white; text-decoration: none;">Admin Login</a>
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 pt-4">
+                        <h1><a href="{% url 'welcome' %}" class="travel">Trevel.ai</a></h1>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="header-search">
+                            <form id="search-form" method="GET" action="{% url 'search' %}">
+                                <input class="input" name="query" placeholder="Search here">
+                                <button type="submit" class="search-btn">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-3 clearfix">
+                        <div class="header-ctn">
+                            <div>
+                                <a href="{% url 'view_to_wishlist' %}">
+                                    <i class="fa fa-heart-o"></i>
+                                    <span>Your Wishlist</span>
+                                </a>
+                            </div>
+                            <div class="dropdown">
+                                <a class="" href="{% url 'cart' %}">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>Your Cart</span>
+                                </a>
+                            </div>
+                            <div class="menu-toggle">
+                                <a href="#"><i class="fa fa-bars"></i><span>Menu</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+  
+    <!-- SECTION -->
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h3 class="title">Products</h3>
+                    </div>
+                </div>
+                
+                <!-- Products Grid -->
+                <div class="col-md-12">
+                    <div class="row">
+                        {% if products %}
+                            {% for product in products %}
+                                <div class="col-md-4">
+                                    <div class="product" style="margin-bottom: 30px;">
+                                        <a href="{% url 'product_detail' product.id %}">
+                                            <div class="product-img">
+                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%; height: 250px; object-fit: cover;">
+                                            </div>
+                                            <div class="product-body">
+                                                <p class="product-category">{{ product.category.name }}</p>
+                                                <h3 class="product-name">{{ product.name }}</h3>
+                                                <h4 class="product-price">₹{{ product.price }}</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="not-available">No Products Available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot-container">
+        <a href="{% url 'chat_home' %}" class="chatbot-button">
+            <i class="fa fa-comments"></i>
+            <span>Chat with us!</span>
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>© 2024 Travel.ai. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

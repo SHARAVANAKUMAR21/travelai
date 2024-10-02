@@ -1,0 +1,363 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to travel.ai & co</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #212121; /* Dark black background */
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: #c0392b; /* Red */
+            color: #fff;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        .navbar:hover {
+            background-color: #e74c3c; /* Lighter red on hover */
+        }
+
+        .navbar img {
+            width: 200px;
+            height: auto;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #fff;
+            color: #c0392b; /* Red text on hover */
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{% static 'img/bgimg1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            font-weight: 700;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .hero p {
+            font-size: 28px;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .hero button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #c0392b;
+            border: none;
+            color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #e74c3c;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-container {
+            padding: 60px 20px;
+            background-color: #e74c3c;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-in-out;
+        }
+
+        .about-container.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-container h2 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .about-container p {
+            font-size: 18px;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .footer {
+            background-color: #c0392b;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .footer a:hover {
+            color: #e74c3c;
+        }
+
+        .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 20px;
+        }
+
+        .social-icons a:hover {
+            color: #e74c3c;
+            transition: color 0.3s ease;
+        }
+
+        form {
+            background-color: #c0392b;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            .navbar ul li {
+                margin-left: 10px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            button {
+                padding: 8px 15px;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/"><img src="{% static 'img/logo.png' %}" alt="Travel.ai & Co Logo"></a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Discover Your Perfect Travel Destination</h1>
+
+        <br>
+
+        <button onclick="window.location.href='#destination-form'">Get Started</button>
+        
+      
+    </div>
+
+    <!-- Travel Destination Form -->
+    <div id="destination-form">
+        <h1>Travel Destination Recommender</h1>
+
+        <form method="POST" action="{% url 'generate_recommendation' %}">
+            {% csrf_token %}
+            
+            <!-- Climate preference -->
+            <label for="climate">Preferred Climate:</label><br>
+            <select id="climate" name="climate">
+                <option value="Tropical">Tropical</option>
+                <option value="Temperate">Temperate</option>
+                <option value="Arid">Arid</option>
+                <option value="Cold">Cold</option>
+            </select><br><br>
+        
+            <!-- Activities preference -->
+            <label for="activities">Preferred Activities:</label><br>
+            <input type="text" id="activities" name="activities" placeholder="e.g., Hiking, Sightseeing"><br><br>
+        
+            <!-- Location preference -->
+            <label for="location_preference">Location Preference (Beach, Mountains, City, etc.):</label><br>
+            <select id="location_preference" name="location_preference">
+                <option value="Beach">Beach</option>
+                <option value="Mountains">Mountains</option>
+                <option value="City">City</option>
+                <option value="Countryside">Countryside</option>
+            </select><br><br>
+        
+            <!-- Accommodation preference -->
+            <label for="accommodation">Preferred Accommodation Type:</label><br>
+            <select id="accommodation" name="accommodation">
+                <option value="Hotel">Hotel</option>
+                <option value="Hostel">Hostel</option>
+                <option value="Resort">Resort</option>
+                <option value="Vacation Rental">Vacation Rental</option>
+            </select><br><br>
+        
+            <!-- Cuisine preference -->
+            <label for="cuisine">Preferred Cuisine Type:</label><br>
+            <input type="text" id="cuisine" name="cuisine" placeholder="e.g., Italian, Local"><br><br>
+        
+            <!-- Transportation preference -->
+            <label for="transportation">Preferred Mode of Transportation:</label><br>
+            <select id="transportation" name="transportation">
+                <option value="Car Rental">Car Rental</option>
+                <option value="Public Transport">Public Transport</option>
+                <option value="Bicycle">Bicycle</option>
+                <option value="Walking">Walking</option>
+            </select><br><br>
+        
+            <!-- Group preference -->
+            <label for="group_preference">Travel Group Preference (Solo, Family, Friends):</label><br>
+            <select id="group_preference" name="group_preference">
+                <option value="Solo">Solo</option>
+                <option value="Family">Family</option>
+                <option value="Friends">Friends</option>
+            </select><br><br>
+        
+            <!-- Budget -->
+            <label for="budget">Budget (in USD):</label><br>
+            <input type="number" id="budget" name="budget" placeholder="Enter your budget"><br><br>
+        
+            <!-- Attractions preference -->
+            <label for="attractions">Preferred Attractions (e.g., Museums, Nightlife):</label><br>
+            <input type="text" id="attractions" name="attractions" placeholder="e.g., Museums, Nightlife"><br><br>
+        
+            <!-- Vacation pace -->
+            <label for="vacation_pace">Preferred Vacation Pace:</label><br>
+            <select id="vacation_pace" name="vacation_pace">
+                <option value="Relaxed">Relaxed</option>
+                <option value="Active">Active</option>
+            </select><br><br>
+        
+            <input type="submit" value="Get Recommendation">
+        </form>
+        
+       
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Travel.ai & Co</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+</body>
+
+</html>

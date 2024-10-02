@@ -1,0 +1,303 @@
+    {% comment %} <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chat Page</title>
+        <!-- Add Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body style="background-color: #222; color: white;">
+    
+        <!-- Navbar Section -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'welcome' %}">My Website</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'welcome' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'product_list' %}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'chat_home' %}">Chat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <!-- Main Container -->
+        <div class="container my-5">
+            <!-- Alert Section -->
+            {% if messages %}
+                <div class="alert-container">
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    
+            <!-- Chat History Section -->
+            <div class="chat-container mb-4">
+                <div id="chatHistory" style="background-color: #000; padding: 20px; border-radius: 10px; color: white;">
+                    {% for chat in get_history %}
+                        <div class="chat-entry user-message">
+                            <strong>You:</strong> {{ chat.message_input }} <br />
+                            <small>{{ chat.created_at|date:"H:i, d M Y" }}</small>
+                        </div>
+                        <div class="chat-entry bot-response">
+                            <strong>Bot:</strong> {{ chat.bot_response }} <br />
+                            <small>{{ chat.created_at|date:"H:i, d M Y" }}</small>
+                        </div>
+                        <hr />
+                    {% endfor %}
+                </div>
+            </div>
+    
+            <!-- Chat Form -->
+            <form method="POST" action="{% url 'chat_home' %}" class="chat-form">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <textarea
+                        name="userInput"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Ask something..."
+                        required
+                        style="background-color: #333; color: white; border: 1px solid #c0392b;"
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #c0392b; border: none;">Send</button>
+            </form>
+    
+            <!-- Return to Home Button -->
+            <div class="mt-4">
+                <a href="{% url 'product_list' %}" class="btn btn-secondary w-100" style="background-color: #000; border: none; color: white;">Return to Home</a>
+            </div>
+        </div>
+    
+        <!-- Footer Section -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2024 My Website. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="text-white me-2">Privacy Policy</a>
+                        <a href="#" class="text-white">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+        <!-- Bootstrap JS (for navbar functionality) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+        <style>
+            /* Additional styles for the chat interface */
+            .chat-entry {
+                margin-bottom: 10px;
+            }
+    
+            .user-message {
+                color: #c0392b; /* Red color for user messages */
+            }
+    
+            .bot-response {
+                color: #27ae60; /* Green color for bot responses */
+            }
+    
+            #chatHistory {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+        </style>
+    
+        <!-- Optional: Scroll to the latest message -->
+        <script>
+            const chatHistory = document.getElementById('chatHistory');
+            if (chatHistory) {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+        </script>
+    </body>
+    </html>
+     {% endcomment %}
+
+
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+         <title>Chat Page</title>
+         <!-- Add Bootstrap CSS -->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+         <style>
+             body {
+                 background-color: #222;
+                 color: white;
+             }
+     
+             .chat-container {
+                 background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+                 padding: 20px;
+                 border-radius: 10px;
+                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+             }
+     
+             .chat-entry {
+                 margin-bottom: 15px;
+                 padding: 10px;
+                 border-radius: 5px;
+             }
+     
+             .user-message {
+                 background-color: rgba(192, 57, 43, 0.7); /* Semi-transparent red for user messages */
+                 color: white;
+             }
+     
+             .bot-response {
+                 background-color: rgba(39, 174, 96, 0.7); /* Semi-transparent green for bot responses */
+                 color: white;
+             }
+     
+             .btn-primary {
+                 background-color: #c0392b;
+                 border: none;
+             }
+     
+             .btn-secondary {
+                 background-color: #000;
+                 border: none;
+             }
+     
+             footer {
+                 background-color: #111;
+             }
+         </style>
+     </head>
+     <body>
+     
+         <!-- Navbar Section -->
+         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+             <div class="container-fluid">
+                 <a class="navbar-brand" href="{% url 'welcome' %}">travel.ai
+
+                 </a>
+                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                     <span class="navbar-toggler-icon"></span>
+                 </button>
+                 <div class="collapse navbar-collapse" id="navbarNav">
+                     <ul class="navbar-nav ms-auto">
+                         <li class="nav-item">
+                             <a class="nav-link" href="{% url 'welcome' %}">Home</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="nav-link" href="{% url 'product_list' %}">Products</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="nav-link active" aria-current="page" href="{% url 'chat_home' %}">Chat</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="nav-link" href="#">Contact</a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+         </nav>
+     
+         <!-- Main Container -->
+         <div class="container my-5">
+             <!-- Alert Section -->
+             {% if messages %}
+                 <div class="alert-container">
+                     {% for message in messages %}
+                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                             {{ message }}
+                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                         </div>
+                     {% endfor %}
+                 </div>
+             {% endif %}
+     
+             <!-- Chat History Section -->
+             <div class="chat-container mb-4">
+                 <div id="chatHistory">
+                     {% for chat in get_history %}
+                         <div class="chat-entry user-message">
+                             <strong>You:</strong> {{ chat.message_input }} <br />
+                             <small>{{ chat.created_at|date:"H:i, d M Y" }}</small>
+                         </div>
+                         <div class="chat-entry bot-response">
+                             <strong>Bot:</strong> {{ chat.bot_response }} <br />
+                             <small>{{ chat.created_at|date:"H:i, d M Y" }}</small>
+                         </div>
+                         <hr />
+                     {% endfor %}
+                 </div>
+             </div>
+     
+             <!-- Chat Form -->
+             <form method="POST" action="{% url 'chat_home' %}" class="chat-form">
+                 {% csrf_token %}
+                 <div class="mb-3">
+                     <textarea
+                         name="userInput"
+                         class="form-control"
+                         rows="3"
+                         placeholder="Ask something..."
+                         required
+                         style="background-color: #333; color: white; border: 1px solid #c0392b;"
+                     ></textarea>
+                 </div>
+                 <button type="submit" class="btn btn-primary w-100">Send</button>
+             </form>
+     
+             <!-- Return to Home Button -->
+             <div class="mt-4">
+                 <a href="{% url 'product_list' %}" class="btn btn-secondary w-100">Return to Home</a>
+             </div>
+         </div>
+     
+         <!-- Footer Section -->
+         <footer class="text-white py-4 mt-5">
+             <div class="container">
+                 <div class="row">
+                     <div class="col-md-6">
+                         <p>&copy; 2024 My Website. All rights reserved.</p>
+                     </div>
+                     <div class="col-md-6 text-md-end">
+                         <a href="#" class="text-white me-2">Privacy Policy</a>
+                         <a href="#" class="text-white">Terms of Service</a>
+                     </div>
+                 </div>
+             </div>
+         </footer>
+     
+         <!-- Bootstrap JS (for navbar functionality) -->
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+     
+         <!-- Optional: Scroll to the latest message -->
+         <script>
+             const chatHistory = document.getElementById('chatHistory');
+             if (chatHistory) {
+                 chatHistory.scrollTop = chatHistory.scrollHeight;
+             }
+         </script>
+     </body>
+     </html>
+     
